@@ -14,22 +14,22 @@ theme: /
             $session.address = null;
         a: Добро пожаловать в PizzaBot!
         a: Я помогу оформить заказ пиццы.
-        a: Например: «Хочу большую пепперони на тонком тесте».
+        a: Например: «Хочу большую пиццу пепперони на тонком тесте».
 
 
     state: PizzaParams
         intent!: /PizzaParamsIntent
         script:
             if ($parseTree._SizeSlot) {
-                $session.size = $parseTree._SizeSlot;
+                $session.size = $parseTree._SizeSlot.value;
             }
 
             if ($parseTree._ToppingSlot) {
-                $session.topping = $parseTree._ToppingSlot;
+                $session.topping = $parseTree._ToppingSlot.value;
             }
 
             if ($parseTree._DoughSlot) {
-                $session.dough = $parseTree._DoughSlot;
+                $session.dough = $parseTree._DoughSlot.value;
             }
         a: Параметры пиццы записаны.
         go!: /CheckOrder
@@ -39,13 +39,9 @@ theme: /
         intent!: /SizeIntent
         script:
             if ($parseTree._SizeSlot) {
-                $session.size = $parseTree._SizeSlot;
+                $session.size = $parseTree._SizeSlot.value;
             }
         a: Размер записан.
-        a: SLOT = {{$parseTree._SizeSlot}}
-        a: DATA = {{$parseTree._SizeSlot.slotData}}
-        a: VALUE = {{$parseTree._SizeSlot.value}}
-        a: TEXT = {{$parseTree._SizeSlot.text}}
         go!: /CheckOrder
 
 
@@ -53,7 +49,7 @@ theme: /
         intent!: /ToppingIntent
         script:
             if ($parseTree._ToppingSlot) {
-                $session.topping = $parseTree._ToppingSlot;
+                $session.topping = $parseTree._ToppingSlot.value;
             }
         a: Начинка записана.
         go!: /CheckOrder
@@ -63,7 +59,7 @@ theme: /
         intent!: /DoughIntent
         script:
             if ($parseTree._DoughSlot) {
-                $session.dough = $parseTree._DoughSlot;
+                $session.dough = $parseTree._DoughSlot.value;
             }
         a: Основа записана.
         go!: /CheckOrder
@@ -73,7 +69,7 @@ theme: /
         intent!: /SauceIntent
         script:
             if ($parseTree._SauceSlot) {
-                $session.sauce = $parseTree._SauceSlot;
+                $session.sauce = $parseTree._SauceSlot.value;
             }
         a: Соус записан.
         go!: /CheckOrder
@@ -83,7 +79,7 @@ theme: /
         intent!: /DeliveryIntent
         script:
             if ($parseTree._DeliverySlot) {
-                $session.delivery = $parseTree._DeliverySlot;
+                $session.delivery = $parseTree._DeliverySlot.value;
             }
         a: Способ получения записан.
         go!: /CheckOrder
@@ -93,7 +89,7 @@ theme: /
         intent!: /AddressIntent
         script:
             if ($parseTree._AddressSlot) {
-                $session.address = $parseTree._AddressSlot;
+                $session.address = $request.query;
             }
         a: Адрес доставки записан.
         go!: /CheckOrder
@@ -118,17 +114,76 @@ theme: /
 
     state: CheckAddress
         script:
-            var delivery = JSON.stringify($session.delivery);
-
-            if (
-                delivery &&
-                delivery.indexOf("delivery") >= 0 &&
-                !$session.address
-            ) {
+            if ($session.delivery == "delivery" && !$session.address) {
                 $reactions.transition("/AskAddress");
             } else {
-                $reactions.transition("/ConfirmOrder");
+                $reactions.transition("/PrepareOrder");
             }
+
+
+    state: PrepareOrder
+        script:
+            if ($session.size == "small") {
+                $session.sizeName = "маленькая";
+                $session.sizePrice = 0;
+            } else if ($session.size == "medium") {
+                $session.sizeName = "средняя";
+                $session.sizePrice = 150;
+            } else if ($session.size == "large") {
+                $session.sizeName = "большая";
+                $session.sizePrice = 300;
+            }
+
+            if ($session.topping == "pepperoni") {
+                $session.toppingName = "пепперони";
+                $session.basePrice = 590;
+            } else if ($session.topping == "margherita") {
+                $session.toppingName = "маргарита";
+                $session.basePrice = 490;
+            } else if ($session.topping == "four_cheese") {
+                $session.toppingName = "четыре сыра";
+                $session.basePrice = 650;
+            } else if ($session.topping == "ham_mushrooms") {
+                $session.toppingName = "ветчина и грибы";
+                $session.basePrice = 620;
+            } else if ($session.topping == "vegetable") {
+                $session.toppingName = "овощная";
+                $session.basePrice = 540;
+            }
+
+            if ($session.dough == "thin") {
+                $session.doughName = "тонкое тесто";
+                $session.doughPrice = 0;
+            } else if ($session.dough == "classic") {
+                $session.doughName = "традиционное тесто";
+                $session.doughPrice = 0;
+            } else if ($session.dough == "cheese_crust") {
+                $session.doughName = "сырный борт";
+                $session.doughPrice = 120;
+            }
+
+            if ($session.sauce == "tomato") {
+                $session.sauceName = "томатный";
+            } else if ($session.sauce == "cheese") {
+                $session.sauceName = "сырный";
+            } else if ($session.sauce == "garlic") {
+                $session.sauceName = "чесночный";
+            } else if ($session.sauce == "none") {
+                $session.sauceName = "без соуса";
+            }
+
+            if ($session.delivery == "delivery") {
+                $session.deliveryName = "доставка";
+            } else if ($session.delivery == "pickup") {
+                $session.deliveryName = "самовывоз";
+            }
+
+            $session.totalPrice =
+                $session.basePrice +
+                $session.sizePrice +
+                $session.doughPrice;
+
+            $reactions.transition("/ConfirmOrder");
 
 
     state: AskSize
@@ -153,28 +208,45 @@ theme: /
 
 
     state: ConfirmOrder
-        a: Все необходимые параметры заказа получены.
+        a: Ваш заказ:
+        a: Пицца: {{$session.toppingName}}.
+        a: Размер: {{$session.sizeName}}.
+        a: Основа: {{$session.doughName}}.
+        a: Соус: {{$session.sauceName}}.
+        a: Способ получения: {{$session.deliveryName}}.
+
+        if: $session.delivery == "delivery"
+            a: Адрес: {{$session.address}}.
+
+        a: Стоимость заказа: {{$session.totalPrice}} руб.
         a: Всё верно? Скажите «да» или «нет».
 
 
     state: ConfirmYes
         intent!: /YesIntent
         a: Заказ подтверждён.
-        a: Пицца передана на приготовление.
+        a: Стоимость заказа: {{$session.totalPrice}} руб.
+
+        if: $session.delivery == "delivery"
+            a: Заказ передан на приготовление и будет доставлен по указанному адресу.
+
+        if: $session.delivery == "pickup"
+            a: Заказ передан на приготовление. Забрать его можно самостоятельно.
+
         a: Спасибо за заказ!
 
 
     state: ConfirmNo
         intent!: /NoIntent
         a: Хорошо, заказ пока не подтверждаю.
-        a: Скажите, что хотите изменить.
+        a: Скажите, какой параметр хотите изменить.
 
 
     state: ChangeOrder
         intent!: /ChangeIntent
         a: Что хотите изменить?
         a: Можно изменить размер, начинку, основу, соус, способ получения или адрес.
-        a: Просто назовите новое значение.
+        a: Назовите новое значение.
 
 
     state: Reset
@@ -186,6 +258,17 @@ theme: /
             $session.sauce = null;
             $session.delivery = null;
             $session.address = null;
+
+            $session.sizeName = null;
+            $session.toppingName = null;
+            $session.doughName = null;
+            $session.sauceName = null;
+            $session.deliveryName = null;
+
+            $session.basePrice = 0;
+            $session.sizePrice = 0;
+            $session.doughPrice = 0;
+            $session.totalPrice = 0;
         a: Заказ очищен.
         a: Начинаем заново. Какую пиццу хотите?
 
@@ -193,8 +276,9 @@ theme: /
     state: Help
         intent!: /HelpIntent
         a: Я помогу оформить заказ пиццы.
-        a: Например: «Хочу большую пепперони на тонком тесте».
-        a: Можно отдельно указать размер, начинку, основу, соус и способ получения.
+        a: Можно указать несколько параметров сразу.
+        a: Например: «Хочу большую пиццу пепперони на тонком тесте».
+        a: Также можно отдельно назвать размер, начинку, основу, соус и способ получения.
 
 
     state: NoMatch

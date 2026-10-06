@@ -147,7 +147,14 @@ theme: /
 
 
     state: ConfirmOrder
-        a: Все необходимые параметры заказа получены.
+        a: Ваш заказ сформирован.
+        a: Размер: {{$session.size.slotData}}.
+        a: Начинка: {{$session.topping.slotData}}.
+        a: Основа: {{$session.dough.slotData}}.
+        a: Соус: {{$session.sauce.slotData}}.
+        a: Способ получения: {{$session.delivery.slotData}}.
+        if: $session.address
+            a: Адрес: {{$session.address.slotData}}.
         a: Всё верно? Скажите «да» или «нет».
 
 

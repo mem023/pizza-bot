@@ -1,97 +1,781 @@
 {
-    "project": {
-        "id": "zb-cailapub",
-        "name": "zb-cailapub",
-        "folder": "/platform"
+  "project" : {
+    "id" : "pizzabot-1000306974-hRG",
+    "name" : "pizzabot-1000306974-hRG",
+    "folder" : "/platform"
+  },
+  "settings" : {
+    "language" : "ru",
+    "spellingCorrection" : false,
+    "classificationAlgorithm" : "sts",
+    "timezone" : "Europe/Moscow",
+    "extendedSettings" : {
+      "classificationAlgorithmVersion" : 1.0,
+      "tokenizerEngine" : "mystem",
+      "useShared" : false
     },
-    "settings": {
-        "language": "ru",
-        "spellingCorrection": false,
-        "classificationAlgorithm": "sts",
-        "validation": {
-            "phraseValidationEnabled": true,
-            "answerValidationEnabled": true,
-            "phraseValidationThreshold": 0.5,
-            "answerValidationThreshold": 0.8
-        },
-        "timezone": "Europe/Moscow",
-        "extendedSettings": {
-            "classificationAlgorithmVersion": 1.0,
-            "tokenizerEngine": "mystem",
-            "useShared": false
-        }
+    "shared" : false,
+    "validation" : {
+      "phraseValidationEnabled" : true,
+      "answerValidationEnabled" : true,
+      "phraseValidationThreshold" : 0.5,
+      "answerValidationThreshold" : 0.8
+    }
+  },
+  "intents" : [ {
+    "path" : "/PizzaParamsIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "Хочу @Размер_пиццы пиццу @Начинка_пиццы на @Основа_пиццы"
+    }, {
+      "text" : "Мне @Размер_пиццы @Начинка_пиццы @Основа_пиццы"
+    }, {
+      "text" : "Закажу @Начинка_пиццы @Размер_пиццы на @Основа_пиццы"
+    }, {
+      "text" : "Нужна @Размер_пиццы @Начинка_пиццы"
+    }, {
+      "text" : "Давайте @Начинка_пиццы на @Основа_пиццы"
+    }, {
+      "text" : "Хочу @Размер_пиццы пиццу на @Основа_пиццы"
+    }, {
+      "text" : "Мне @Начинка_пиццы с основой @Основа_пиццы"
+    }, {
+      "text" : "Пицца @Начинка_пиццы размер @Размер_пиццы"
+    }, {
+      "text" : "Сделайте @Размер_пиццы @Начинка_пиццы"
+    }, {
+      "text" : "Заказ @Начинка_пиццы @Размер_пиццы"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
     },
-    "intents": [
-        {
-            "path": "/пока",
-            "description": null,
-            "answer": null,
-            "customData": null,
-            "enabled": true,
-            "phrases": [
-                {
-                    "text": "пока",
-                    "entities": null
-                }
-            ],
-            "patterns": null,
-            "slots": null
-        },
-        {
-            "path": "/привет",
-            "description": null,
-            "answer": null,
-            "customData": null,
-            "enabled": true,
-            "phrases": [
-                {
-                    "text": "привет",
-                    "entities": null
-                }
-            ],
-            "patterns": null,
-            "slots": null
-        }
-    ],
-    "entities": [],
-    "enabledSystemEntities": [
-        "duckling.number",
-        "duckling.time",
-        "duckling.duration",
-        "duckling.phone-number",
-        "duckling.email",
-        "duckling.url"
-    ],
-    "systemEntities": [
-        {
-            "name": "duckling.number",
-            "version": "v2",
-            "enabled": true
-        },
-        {
-            "name": "duckling.time",
-            "version": "v2",
-            "enabled": true
-        },
-        {
-            "name": "duckling.duration",
-            "version": "v2",
-            "enabled": true
-        },
-        {
-            "name": "duckling.phone-number",
-            "version": "v2",
-            "enabled": true
-        },
-        {
-            "name": "duckling.email",
-            "version": "v2",
-            "enabled": true
-        },
-        {
-            "name": "duckling.url",
-            "version": "v2",
-            "enabled": true
-        }
-    ]
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "SizeSlot",
+      "entity" : "Размер_пиццы",
+      "required" : false,
+      "prompts" : [ ],
+      "array" : false
+    }, {
+      "name" : "ToppingSlot",
+      "entity" : "Начинка_пиццы",
+      "required" : false,
+      "prompts" : [ ],
+      "array" : false
+    }, {
+      "name" : "DoughSlot",
+      "entity" : "Основа_пиццы",
+      "required" : false,
+      "prompts" : [ ],
+      "array" : false
+    } ],
+    "priority" : 0
+  }, {
+    "path" : "/SizeIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "Хочу @Размер_пиццы"
+    }, {
+      "text" : "Размер @Размер_пиццы"
+    }, {
+      "text" : "Пусть будет @Размер_пиццы"
+    }, {
+      "text" : "Мне @Размер_пиццы"
+    }, {
+      "text" : "Выбираю @Размер_пиццы"
+    }, {
+      "text" : "Сделайте @Размер_пиццы"
+    }, {
+      "text" : "Пицца @Размер_пиццы"
+    }, {
+      "text" : "Нужна @Размер_пиццы"
+    }, {
+      "text" : "Возьму @Размер_пиццы"
+    }, {
+      "text" : "Изменить размер на @Размер_пиццы"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "SizeSlot",
+      "entity" : "Размер_пиццы",
+      "required" : true,
+      "prompts" : [ ],
+      "array" : false
+    } ],
+    "priority" : 0
+  }, {
+    "path" : "/ToppingIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "Хочу @Начинка_пиццы"
+    }, {
+      "text" : "Начинка @Начинка_пиццы"
+    }, {
+      "text" : "Пусть будет @Начинка_пиццы"
+    }, {
+      "text" : "Мне @Начинка_пиццы"
+    }, {
+      "text" : "Выбираю @Начинка_пиццы"
+    }, {
+      "text" : "Сделайте @Начинка_пиццы"
+    }, {
+      "text" : "Пицца @Начинка_пиццы"
+    }, {
+      "text" : "Нужна @Начинка_пиццы"
+    }, {
+      "text" : "Возьму @Начинка_пиццы"
+    }, {
+      "text" : "Изменить начинку на @Начинка_пиццы"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "ToppingSlot",
+      "entity" : "Начинка_пиццы",
+      "required" : true,
+      "prompts" : [ ],
+      "array" : false
+    } ],
+    "priority" : 0
+  }, {
+    "path" : "/DoughIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "Хочу @Основа_пиццы"
+    }, {
+      "text" : "Основа @Основа_пиццы"
+    }, {
+      "text" : "На @Основа_пиццы"
+    }, {
+      "text" : "Пусть будет @Основа_пиццы"
+    }, {
+      "text" : "Мне @Основа_пиццы"
+    }, {
+      "text" : "Выбираю @Основа_пиццы"
+    }, {
+      "text" : "Сделайте на @Основа_пиццы"
+    }, {
+      "text" : "Пицца на @Основа_пиццы"
+    }, {
+      "text" : "Нужно @Основа_пиццы"
+    }, {
+      "text" : "Изменить основу на @Основа_пиццы"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "DoughSlot",
+      "entity" : "Основа_пиццы",
+      "required" : true,
+      "prompts" : [ ],
+      "array" : false
+    } ],
+    "priority" : 0
+  }, {
+    "path" : "/SauceIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "Хочу @Соус"
+    }, {
+      "text" : "Соус @Соус"
+    }, {
+      "text" : "Добавьте @Соус"
+    }, {
+      "text" : "Пусть будет @Соус"
+    }, {
+      "text" : "Мне @Соус"
+    }, {
+      "text" : "Выбираю @Соус"
+    }, {
+      "text" : "Сделайте @Соус"
+    }, {
+      "text" : "К пицце @Соус"
+    }, {
+      "text" : "Нужен @Соус"
+    }, {
+      "text" : "Изменить соус на @Соус"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "SauceSlot",
+      "entity" : "Соус",
+      "required" : true,
+      "prompts" : [ ],
+      "array" : false
+    } ],
+    "priority" : 0
+  }, {
+    "path" : "/DeliveryIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "Хочу @Способ_получения"
+    }, {
+      "text" : "Будет @Способ_получения"
+    }, {
+      "text" : "Выбираю @Способ_получения"
+    }, {
+      "text" : "Мне нужна @Способ_получения"
+    }, {
+      "text" : "Оформите @Способ_получения"
+    }, {
+      "text" : "Получение @Способ_получения"
+    }, {
+      "text" : "Давайте @Способ_получения"
+    }, {
+      "text" : "Заказ через @Способ_получения"
+    }, {
+      "text" : "Способ получения @Способ_получения"
+    }, {
+      "text" : "Изменить на @Способ_получения"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "DeliverySlot",
+      "entity" : "Способ_получения",
+      "required" : true,
+      "prompts" : [ ],
+      "array" : false
+    } ],
+    "priority" : 0
+  }, {
+    "path" : "/AddressIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "Адрес @Адрес_доставки"
+    }, {
+      "text" : "Доставьте @Адрес_доставки"
+    }, {
+      "text" : "Мой адрес @Адрес_доставки"
+    }, {
+      "text" : "Везите @Адрес_доставки"
+    }, {
+      "text" : "Я живу @Адрес_доставки"
+    }, {
+      "text" : "Курьеру @Адрес_доставки"
+    }, {
+      "text" : "Доставка @Адрес_доставки"
+    }, {
+      "text" : "Привезите @Адрес_доставки"
+    }, {
+      "text" : "Укажите @Адрес_доставки"
+    }, {
+      "text" : "Изменить адрес @Адрес_доставки"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ {
+      "name" : "AddressSlot",
+      "entity" : "Адрес_доставки",
+      "required" : true,
+      "prompts" : [ ],
+      "array" : false
+    } ],
+    "priority" : 0
+  }, {
+    "path" : "/YesIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "да"
+    }, {
+      "text" : "да подтверждаю"
+    }, {
+      "text" : "верно"
+    }, {
+      "text" : "всё правильно"
+    }, {
+      "text" : "подтверждаю"
+    }, {
+      "text" : "оформляйте"
+    }, {
+      "text" : "согласен"
+    }, {
+      "text" : "точно"
+    }, {
+      "text" : "конечно"
+    }, {
+      "text" : "давайте"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/NoIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "нет"
+    }, {
+      "text" : "не подтверждаю"
+    }, {
+      "text" : "неверно"
+    }, {
+      "text" : "хочу изменить"
+    }, {
+      "text" : "надо поменять"
+    }, {
+      "text" : "ошибка"
+    }, {
+      "text" : "не всё правильно"
+    }, {
+      "text" : "отмена подтверждения"
+    }, {
+      "text" : "пока не оформляйте"
+    }, {
+      "text" : "исправить заказ"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/ChangeIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "хочу поменять заказ"
+    }, {
+      "text" : "изменить заказ"
+    }, {
+      "text" : "поменять размер"
+    }, {
+      "text" : "поменять начинку"
+    }, {
+      "text" : "поменять основу"
+    }, {
+      "text" : "изменить соус"
+    }, {
+      "text" : "поменять адрес"
+    }, {
+      "text" : "изменить способ получения"
+    }, {
+      "text" : "исправить параметры"
+    }, {
+      "text" : "давайте изменим заказ"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/ResetIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "начать заново"
+    }, {
+      "text" : "новый заказ"
+    }, {
+      "text" : "сбросить заказ"
+    }, {
+      "text" : "обнуление"
+    }, {
+      "text" : "очистить заказ"
+    }, {
+      "text" : "перезапустить"
+    }, {
+      "text" : "сначала"
+    }, {
+      "text" : "хочу другой заказ"
+    }, {
+      "text" : "удалить всё"
+    }, {
+      "text" : "сброс"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ ],
+    "priority" : 0
+  }, {
+    "path" : "/HelpIntent",
+    "description" : "",
+    "answer" : "",
+    "enabled" : true,
+    "shared" : false,
+    "phrases" : [ {
+      "text" : "помощь"
+    }, {
+      "text" : "что ты умеешь"
+    }, {
+      "text" : "помоги"
+    }, {
+      "text" : "как заказать"
+    }, {
+      "text" : "что можно заказать"
+    }, {
+      "text" : "подскажи"
+    }, {
+      "text" : "команды"
+    }, {
+      "text" : "что делать"
+    }, {
+      "text" : "как это работает"
+    }, {
+      "text" : "нужна помощь"
+    } ],
+    "classificationRules" : {
+      "refs" : [ ]
+    },
+    "patterns" : [ ],
+    "slots" : [ ],
+    "priority" : 0
+  } ],
+  "entities" : [ {
+    "entity" : {
+      "name" : "Размер_пиццы",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "маленькая", "маленькую", "небольшая", "небольшую", "25 см", "25 сантиметров" ],
+      "value" : "{\"value\": \"small\", \"ru_name\": \"маленькая\", \"diameter\": 25, \"price_add\": 0}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "средняя", "среднюю", "30 см", "30 сантиметров", "обычная", "стандартная" ],
+      "value" : "{\"value\": \"medium\", \"ru_name\": \"средняя\", \"diameter\": 30, \"price_add\": 150}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "большая", "большую", "35 см", "35 сантиметров", "макси", "семейная" ],
+      "value" : "{\"value\": \"large\", \"ru_name\": \"большая\", \"diameter\": 35, \"price_add\": 300}"
+    } ]
+  }, {
+    "entity" : {
+      "name" : "Начинка_пиццы",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "пепперони", "с пепперони", "колбасная", "острая колбаса" ],
+      "value" : "{\"value\": \"pepperoni\", \"ru_name\": \"пепперони\", \"base_price\": 590}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "маргарита", "сыр и томаты", "с томатами и сыром" ],
+      "value" : "{\"value\": \"margherita\", \"ru_name\": \"маргарита\", \"base_price\": 490}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "четыре сыра", "4 сыра", "сырная", "много сыра" ],
+      "value" : "{\"value\": \"four_cheese\", \"ru_name\": \"четыре сыра\", \"base_price\": 650}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "ветчина и грибы", "с ветчиной и грибами", "грибная с ветчиной" ],
+      "value" : "{\"value\": \"ham_mushrooms\", \"ru_name\": \"ветчина и грибы\", \"base_price\": 620}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "овощная", "вегетарианская", "с овощами", "без мяса" ],
+      "value" : "{\"value\": \"vegetable\", \"ru_name\": \"овощная\", \"base_price\": 540}"
+    } ]
+  }, {
+    "entity" : {
+      "name" : "Основа_пиццы",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "тонкое", "тонкая", "на тонком тесте", "тонкое тесто" ],
+      "value" : "{\"value\": \"thin\", \"ru_name\": \"тонкое тесто\", \"price_add\": 0}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "традиционное", "традиционная", "классическое", "обычное тесто" ],
+      "value" : "{\"value\": \"classic\", \"ru_name\": \"традиционное тесто\", \"price_add\": 0}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "сырный борт", "с сырным бортом", "сырная корочка" ],
+      "value" : "{\"value\": \"cheese_crust\", \"ru_name\": \"сырный борт\", \"price_add\": 120}"
+    } ]
+  }, {
+    "entity" : {
+      "name" : "Соус",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "томатный", "томатный соус", "красный" ],
+      "value" : "{\"value\": \"tomato\", \"ru_name\": \"томатный\"}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "сырный", "сырный соус" ],
+      "value" : "{\"value\": \"cheese\", \"ru_name\": \"сырный\"}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "чесночный", "чесночный соус" ],
+      "value" : "{\"value\": \"garlic\", \"ru_name\": \"чесночный\"}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "без соуса", "соус не нужен", "никакой" ],
+      "value" : "{\"value\": \"none\", \"ru_name\": \"без соуса\"}"
+    } ]
+  }, {
+    "entity" : {
+      "name" : "Способ_получения",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "доставка", "доставкой", "курьером", "привезите" ],
+      "value" : "{\"value\": \"delivery\", \"ru_name\": \"доставка\"}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "самовывоз", "сам заберу", "заберу сам", "заберу в пиццерии" ],
+      "value" : "{\"value\": \"pickup\", \"ru_name\": \"самовывоз\"}"
+    } ]
+  }, {
+    "entity" : {
+      "name" : "Улица",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "synonyms",
+      "rule" : [ "Ленина", "улица Ленина", "Ленина улица" ],
+      "value" : "{\"value\": \"Ленина\", \"ru_name\": \"улица Ленина\"}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Байкальская", "улица Байкальская" ],
+      "value" : "{\"value\": \"Байкальская\", \"ru_name\": \"улица Байкальская\"}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Советская", "улица Советская" ],
+      "value" : "{\"value\": \"Советская\", \"ru_name\": \"улица Советская\"}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Карла Маркса", "улица Карла Маркса" ],
+      "value" : "{\"value\": \"Карла Маркса\", \"ru_name\": \"улица Карла Маркса\"}"
+    }, {
+      "type" : "synonyms",
+      "rule" : [ "Декабрьских Событий", "улица Декабрьских Событий" ],
+      "value" : "{\"value\": \"Декабрьских Событий\", \"ru_name\": \"улица Декабрьских Событий\"}"
+    } ]
+  }, {
+    "entity" : {
+      "name" : "Адрес_доставки",
+      "enabled" : true,
+      "shared" : false,
+      "type" : "annotation",
+      "priority" : 1,
+      "noSpelling" : true,
+      "noMorph" : false,
+      "phoneticSearch" : false,
+      "fuzzySearch" : false,
+      "client" : false,
+      "hidden" : false
+    },
+    "records" : [ {
+      "type" : "pattern",
+      "rule" : [ "@Улица дом @duckling.number" ],
+      "value" : ""
+    } ]
+  } ],
+  "enabledSystemEntities" : [ "duckling.number", "duckling.time", "duckling.duration", "duckling.phone-number", "duckling.email", "duckling.url" ],
+  "spellerDictionary" : [ ],
+  "systemEntities" : [ {
+    "name" : "mystem.geo",
+    "enabled" : false
+  }, {
+    "name" : "mystem.persn",
+    "enabled" : false
+  }, {
+    "name" : "mystem.obsc",
+    "enabled" : false
+  }, {
+    "name" : "mystem.patrn",
+    "enabled" : false
+  }, {
+    "name" : "mystem.famn",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.romn",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.latn",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.numb",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.intg",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.abbr",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.name",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.surn",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.patr",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.geox",
+    "enabled" : false
+  }, {
+    "name" : "pymorphy.orgn",
+    "enabled" : false
+  }, {
+    "name" : "duckling.number",
+    "version" : "v2",
+    "enabled" : true
+  }, {
+    "name" : "duckling.ordinal",
+    "version" : "v2",
+    "enabled" : false
+  }, {
+    "name" : "duckling.amount-of-money",
+    "version" : "v2",
+    "enabled" : false
+  }, {
+    "name" : "duckling.distance",
+    "version" : "v2",
+    "enabled" : false
+  }, {
+    "name" : "duckling.time",
+    "version" : "v2",
+    "enabled" : true
+  }, {
+    "name" : "duckling.date",
+    "version" : "v2",
+    "enabled" : false
+  }, {
+    "name" : "duckling.time-of-day",
+    "version" : "v2",
+    "enabled" : false
+  }, {
+    "name" : "duckling.duration",
+    "version" : "v2",
+    "enabled" : true
+  }, {
+    "name" : "duckling.phone-number",
+    "version" : "v2",
+    "enabled" : true
+  }, {
+    "name" : "duckling.email",
+    "version" : "v2",
+    "enabled" : true
+  }, {
+    "name" : "duckling.url",
+    "version" : "v2",
+    "enabled" : true
+  }, {
+    "name" : "duckling.interval",
+    "version" : "v2",
+    "enabled" : false
+  }, {
+    "name" : "mlps-obscene.obscene",
+    "enabled" : false
+  }, {
+    "name" : "zb.datetime",
+    "enabled" : false
+  }, {
+    "name" : "zb.number",
+    "enabled" : false
+  } ],
+  "faq" : [ ],
+  "skills" : [ ]
 }

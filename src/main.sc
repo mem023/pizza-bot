@@ -12,12 +12,12 @@ theme: /
             $session.sauce = null;
             $session.delivery = null;
             $session.address = null;
-        a: Добро пожаловать в PizzaBot!
-        a: Я помогу оформить заказ.
-        a: Можете назвать параметры в любом порядке или сразу несколько.
+        a: Добро пожаловать в PizzaBot! 🍕
+        a: Я помогу оформить заказ пиццы.
         a: Например: «Хочу большую пепперони на тонком тесте».
 
 
+    # Несколько параметров заказа одной фразой
     state: PizzaParams
         intent!: /PizzaParamsIntent
         script:
@@ -30,59 +30,77 @@ theme: /
             if ($parseTree._DoughSlot) {
                 $session.dough = $parseTree._DoughSlot.slotData;
             }
-        a: Параметры пиццы записала.
+        a: Параметры пиццы записаны.
         go!: /CheckOrder
 
 
+    # Размер
     state: SetSize
         intent!: /SizeIntent
         script:
-            $session.size = $parseTree._SizeSlot.slotData;
-        a: Размер: {{$session.size.ru_name}}.
+            if ($parseTree._SizeSlot) {
+                $session.size = $parseTree._SizeSlot.slotData;
+            }
+        a: Размер записан.
         go!: /CheckOrder
 
+
+    # Начинка
     state: SetTopping
         intent!: /ToppingIntent
         script:
-            $session.topping = $parseTree._ToppingSlot.slotData;
-        a: Начинка: {{$session.topping.ru_name}}.
+            if ($parseTree._ToppingSlot) {
+                $session.topping = $parseTree._ToppingSlot.slotData;
+            }
+        a: Начинка записана.
         go!: /CheckOrder
 
 
+    # Основа
     state: SetDough
         intent!: /DoughIntent
         script:
-            $session.dough = $parseTree._DoughSlot.slotData;
-        a: Основа: {{$session.dough.ru_name}}.
+            if ($parseTree._DoughSlot) {
+                $session.dough = $parseTree._DoughSlot.slotData;
+            }
+        a: Основа записана.
         go!: /CheckOrder
 
 
-
+    # Соус
     state: SetSauce
         intent!: /SauceIntent
         script:
-            $session.sauce = $parseTree._SauceSlot.slotData;
-        a: Соус: {{$session.sauce.ru_name}}.
+            if ($parseTree._SauceSlot) {
+                $session.sauce = $parseTree._SauceSlot.slotData;
+            }
+        a: Соус записан.
         go!: /CheckOrder
 
 
+    # Доставка или самовывоз
     state: SetDelivery
         intent!: /DeliveryIntent
         script:
-            $session.delivery = $parseTree._DeliverySlot.slotData;
-        a: Способ получения: {{$session.delivery.ru_name}}.
+            if ($parseTree._DeliverySlot) {
+                $session.delivery = $parseTree._DeliverySlot.slotData;
+            }
+        a: Способ получения записан.
         go!: /CheckOrder
 
 
-
+    # Адрес
     state: SetAddress
         intent!: /AddressIntent
         script:
-            $session.address = $parseTree._AddressSlot.slotData;
+            if ($parseTree._AddressSlot) {
+                $session.address = $parseTree._AddressSlot.slotData;
+            }
         a: Адрес доставки записан.
         go!: /CheckOrder
 
 
+    # Проверяем, каких данных не хватает
     state: CheckOrder
         script:
             if (!$session.size) {
@@ -95,9 +113,20 @@ theme: /
                 $reactions.transition("/AskSauce");
             } else if (!$session.delivery) {
                 $reactions.transition("/AskDelivery");
-            } else if (
-                $session.delivery.value == "delivery"
-                && !$session.address
+            } else {
+                $reactions.transition("/CheckAddress");
+            }
+
+
+    # Проверка необходимости адреса
+    state: CheckAddress
+        script:
+            var deliveryText = JSON.stringify($session.delivery);
+
+            if (
+                deliveryText &&
+                deliveryText.indexOf("delivery") >= 0 &&
+                !$session.address
             ) {
                 $reactions.transition("/AskAddress");
             } else {
@@ -105,20 +134,19 @@ theme: /
             }
 
 
+    # Вопросы о недостающих параметрах
     state: AskSize
-        a: Какой размер выбрать: маленький, средний или большой?
+        a: Какой размер пиццы выбрать: маленький, средний или большой?
 
     state: AskTopping
         a: Какую начинку хотите?
-        a: Например: пепперони, маргарита, четыре сыра, ветчина и грибы или овощная.
+        a: Пепперони, маргарита, четыре сыра, ветчина и грибы или овощная?
 
     state: AskDough
-        a: Какую основу выбрать?
-        a: Тонкое тесто, традиционное тесто или сырный борт.
+        a: Какую основу выбрать: тонкое тесто, традиционное тесто или сырный борт?
 
     state: AskSauce
-        a: Какой соус добавить?
-        a: Томатный, сырный, чесночный или без соуса.
+        a: Какой соус добавить: томатный, сырный, чесночный или без соуса?
 
     state: AskDelivery
         a: Как хотите получить заказ: доставка или самовывоз?
@@ -128,19 +156,14 @@ theme: /
         a: Например: «улица Ленина дом 15».
 
 
-
+    # Итог заказа
     state: ConfirmOrder
-        a: Проверьте заказ:
-        a: Пицца — {{$session.topping.ru_name}}.
-        a: Размер — {{$session.size.ru_name}}, {{$session.size.diameter}} см.
-        a: Основа — {{$session.dough.ru_name}}.
-        a: Соус — {{$session.sauce.ru_name}}.
-        a: Получение — {{$session.delivery.ru_name}}.
-        if: $session.delivery.value == "delivery"
-            a: 📍 Адрес — {{$session.address}}.
+        a: 🍕 Все необходимые параметры заказа получены.
+        a: Проверьте заказ и подтвердите его.
         a: Всё верно? Скажите «да» или «нет».
 
 
+    # Подтверждение
     state: ConfirmYes
         intent!: /YesIntent
         a: ✅ Заказ подтверждён!
@@ -148,23 +171,22 @@ theme: /
         a: Спасибо за заказ!
 
 
+    # Отказ от подтверждения
     state: ConfirmNo
         intent!: /NoIntent
         a: Хорошо, заказ пока не подтверждаю.
         a: Скажите, что хотите изменить.
-        a: Например: «изменить размер на средний».
 
 
+    # Изменение заказа
     state: ChangeOrder
         intent!: /ChangeIntent
-        a: Конечно. Можно изменить любой параметр.
-        a: Например:
-        a: «изменить размер на большой»,
-        a: «изменить начинку на маргариту»,
-        a: «изменить соус на сырный».
-        a: Назовите новое значение.
+        a: Что хотите изменить?
+        a: Можно изменить размер, начинку, основу, соус, способ получения или адрес.
+        a: Например: «изменить размер на большой».
 
 
+    # Полный сброс
     state: Reset
         intent!: /ResetIntent
         script:
@@ -174,22 +196,20 @@ theme: /
             $session.sauce = null;
             $session.delivery = null;
             $session.address = null;
-        a: 🔄 Заказ полностью очищен.
-        a: Начинаем заново.
-        a: Назовите любые параметры новой пиццы.
+        a: Заказ очищен.
+        a: Начинаем заново. Какую пиццу хотите?
 
 
+    # Помощь
     state: Help
         intent!: /HelpIntent
         a: Я помогу оформить заказ пиццы.
-        a: Параметры можно сообщать в любом порядке.
-        a: Например:
-        a: «Хочу большую пепперони на тонком тесте».
-        a: Или отдельно: «пепперони», затем «большая», затем «тонкое тесто».
-        a: Уже введённые параметры можно изменить.
+        a: Например: «Хочу большую пепперони на тонком тесте».
+        a: Также можно отдельно указать размер, начинку, основу, соус и способ получения.
 
+
+    # Нераспознанная фраза
     state: NoMatch
         event!: noMatch
         a: Не удалось понять фразу.
-        a: Попробуйте назвать параметр заказа, например:
-        a: «большая», «пепперони», «тонкое тесто» или «доставка».
+        a: Например, скажите: «большая», «пепперони», «тонкое тесто» или «доставка».

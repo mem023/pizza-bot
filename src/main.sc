@@ -23,9 +23,11 @@ theme: /
             if ($parseTree._SizeSlot) {
                 $session.size = $parseTree._SizeSlot;
             }
+
             if ($parseTree._ToppingSlot) {
                 $session.topping = $parseTree._ToppingSlot;
             }
+
             if ($parseTree._DoughSlot) {
                 $session.dough = $parseTree._DoughSlot;
             }
@@ -40,6 +42,10 @@ theme: /
                 $session.size = $parseTree._SizeSlot;
             }
         a: Размер записан.
+        a: SLOT = {{$parseTree._SizeSlot}}
+        a: DATA = {{$parseTree._SizeSlot.slotData}}
+        a: VALUE = {{$parseTree._SizeSlot.value}}
+        a: TEXT = {{$parseTree._SizeSlot.text}}
         go!: /CheckOrder
 
 
@@ -112,11 +118,11 @@ theme: /
 
     state: CheckAddress
         script:
-            var deliveryText = JSON.stringify($session.delivery);
+            var delivery = JSON.stringify($session.delivery);
 
             if (
-                deliveryText &&
-                deliveryText.indexOf("delivery") >= 0 &&
+                delivery &&
+                delivery.indexOf("delivery") >= 0 &&
                 !$session.address
             ) {
                 $reactions.transition("/AskAddress");
@@ -147,14 +153,7 @@ theme: /
 
 
     state: ConfirmOrder
-        a: Ваш заказ сформирован.
-        a: Размер: {{$session.size.slotData}}.
-        a: Начинка: {{$session.topping.slotData}}.
-        a: Основа: {{$session.dough.slotData}}.
-        a: Соус: {{$session.sauce.slotData}}.
-        a: Способ получения: {{$session.delivery.slotData}}.
-        if: $session.address
-            a: Адрес: {{$session.address.slotData}}.
+        a: Все необходимые параметры заказа получены.
         a: Всё верно? Скажите «да» или «нет».
 
 
@@ -175,7 +174,7 @@ theme: /
         intent!: /ChangeIntent
         a: Что хотите изменить?
         a: Можно изменить размер, начинку, основу, соус, способ получения или адрес.
-        a: Например: «изменить размер на большую».
+        a: Просто назовите новое значение.
 
 
     state: Reset
